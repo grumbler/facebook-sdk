@@ -26,10 +26,6 @@ Using JavaScript is recommended if it is feasible for your application,
 as it handles some complex authentication states that can only be detected
 in client-side code.
 """
-
-FACEBOOK_APP_ID = "your app id"
-FACEBOOK_APP_SECRET = "your app secret"
-
 import base64
 import cgi
 import Cookie
@@ -47,6 +43,10 @@ from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 from google.appengine.ext.webapp import template
+
+
+FACEBOOK_APP_ID = "your app id"
+FACEBOOK_APP_SECRET = "your app secret"
 
 
 class User(db.Model):
@@ -82,9 +82,9 @@ class LoginHandler(BaseHandler):
         verification_code = self.request.get("code")
         args = dict(client_id=FACEBOOK_APP_ID,
                     redirect_uri=self.request.path_url)
-        if self.request.get("code"):
+        if verification_code:
             args["client_secret"] = FACEBOOK_APP_SECRET
-            args["code"] = self.request.get("code")
+            args["code"] = verification_code
             response = cgi.parse_qs(urllib.urlopen(
                 "https://graph.facebook.com/oauth/access_token?" +
                 urllib.urlencode(args)).read())

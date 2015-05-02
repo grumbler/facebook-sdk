@@ -4,7 +4,12 @@ python:
   - "2.7"
   - "2.6"
 install:
-  - "pip install . --use-mirrors"
+  - "pip install flake8"
+  - "pip install ."
+before_script:
+  - "flake8 --ignore=E402,F401 examples"
+  - "flake8 facebook"
+  - "flake8 test"
 script: python -m test.test_facebook
 env:
       global:
